@@ -29,7 +29,7 @@ def puzzle(filename):
                     part1_digits.append(value)
                     part2_digits.append(value)
                     continue
-                
+
                 for string, digit in WORD_REPLACEMENTS.items():
                     if line[i:].startswith(string):
                         part2_digits.append(digit)
@@ -38,12 +38,11 @@ def puzzle(filename):
             sum_part1 += part1_digits[0] * 10 + part1_digits[-1] if part1_digits else 0
             sum_part2 += part2_digits[0] * 10 + part2_digits[-1]
 
-    print(sum_part1)
-    print(sum_part2)
+    return (sum_part1, sum_part2)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("filename")
     args = parser.parse_args()
-    puzzle(args.filename)
+    print(puzzle(args.filename))

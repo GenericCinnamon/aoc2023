@@ -24,7 +24,7 @@ class CubeSet:
             green=values.get("green", 0),
             blue=values.get("blue", 0),
         )
-    
+
     def has_fewer_or_equal_cubes(self, other: "CubeSet") -> bool:
         return self.red <= other.red and self.green <= other.green and self.blue <= other.blue
 
@@ -77,12 +77,11 @@ def puzzle(filename):
         for g in games
 
     ))
-    print(part1)
-    print(part2)
+    return (part1, part2)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("filename")
     args = parser.parse_args()
-    puzzle(args.filename)
+    print(puzzle(args.filename))
