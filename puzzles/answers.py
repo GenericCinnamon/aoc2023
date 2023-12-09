@@ -8,12 +8,14 @@ def test(day, filename, answer):
     result = puzzle(filename)
     if result == answer:
         print(f"Day {padded_day}: PASS for {filename}")
+        return True
     else:
         print(f"Day {padded_day}: FAIL for {filename} : {result=} != {answer}")
+        return False
 
 
 if __name__ == "__main__":
-    exit = not all((
+    exit(not all((
         # Day 01
         test(1, "puzzles/day01/test_input1.txt", (142, 142)),
         test(1, "puzzles/day01/test_input2.txt", (ANY, 281)),
@@ -22,7 +24,7 @@ if __name__ == "__main__":
         test(2, "puzzles/day02/test_input1.txt", (8, 2286)),
         test(2, "puzzles/day02/input.txt", (2237, 66681)),
 
-        # Day 097
-        test(7, "puzzles/day07/test_input.txt", (6440, ANY)),
-        # test(7, "puzzles/day07/input.txt", (None, None)),
-    ))
+        # Day 07
+        test(7, "puzzles/day07/test_input.txt", (6440, 5905)),
+        test(7, "puzzles/day07/input.txt", (247815719, 248747492)),
+    )))
