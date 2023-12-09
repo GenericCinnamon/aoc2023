@@ -13,10 +13,16 @@ def test(day, filename, answer):
 
 
 if __name__ == "__main__":
-    # Day 01
-    test(1, "puzzles/day01/test_input1.txt", (142, 142))
-    test(1, "puzzles/day01/test_input2.txt", (ANY, 281))
-    test(1, "puzzles/day01/input.txt", (57346, 57345))
-    # Day 02
-    test(2, "puzzles/day02/test_input1.txt", (8, 2286))
-    test(2, "puzzles/day02/input.txt", (2237, 2286))
+    exit = not all((
+        # Day 01
+        test(1, "puzzles/day01/test_input1.txt", (142, 142)),
+        test(1, "puzzles/day01/test_input2.txt", (ANY, 281)),
+        test(1, "puzzles/day01/input.txt", (57346, 57345)),
+        # Day 02
+        test(2, "puzzles/day02/test_input1.txt", (8, 2286)),
+        test(2, "puzzles/day02/input.txt", (2237, 66681)),
+
+        # Day 097
+        test(7, "puzzles/day07/test_input.txt", (6440, ANY)),
+        # test(7, "puzzles/day07/input.txt", (None, None)),
+    ))
