@@ -30,8 +30,8 @@ if __name__ == "__main__":
         test(4, "test_input.txt", (13, 30)),
         test(4, "input.txt", (23441, 5923918)),
         # Day 05
-        test(5, "test_input.txt", (35, None)),
-        test(5, "input.txt", (None, None)),
+        test(5, "test_input.txt", (35, 46)),
+        test(5, "input.txt", (388071289, None)),
         # Day 07
         test(7, "test_input.txt", (6440, 5905)),
         test(7, "input.txt", (247815719, 248747492)),
