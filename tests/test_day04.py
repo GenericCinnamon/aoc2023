@@ -1,5 +1,3 @@
-from collections import Counter
-
 from puzzles.day04 import day04
 
 
