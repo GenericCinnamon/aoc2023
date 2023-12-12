@@ -98,4 +98,7 @@ def puzzle(filename):
 
 
 if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: day07.py FILENAME\nPrints '(part 1 answer, part 2 answer)'")
+        sys.exit(1)
     print(puzzle(sys.argv[1]))
