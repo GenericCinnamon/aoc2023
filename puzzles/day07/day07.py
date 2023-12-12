@@ -1,6 +1,6 @@
 import sys
 from collections import Counter
-# Not using type hints or argparse because they add ~10ms to startup time
+
 
 # Converts 2-9,T,J,Q,K,A to 2-9,a,b,c,d,e so that strings
 # can be sorted according to value. i.e. A < K < Q < J < T etc.
@@ -29,26 +29,28 @@ HIGH_CARD = '1'
 def hand_type(card_counter):
     most_common = card_counter.most_common()
     unique_cards = len(most_common)
-    if unique_cards == 5:
-        return HIGH_CARD
-    elif unique_cards == 4:
-        return ONE_PAIR
-    elif unique_cards == 3:
-        # Either two pair, or three of a kind
-        cards_in_best_group = most_common[0][1]
-        if cards_in_best_group == 2:
+    cards_in_best_group = most_common[0][1]
+
+    # The type of hand can be identified by the number of unique cards
+    # and how many cards are in the largest group
+    match unique_cards, cards_in_best_group:
+        case 5, _:
+            return HIGH_CARD
+        case 4, _:
+            return ONE_PAIR
+        case 1, _:
+            return FIVE_OF_A_KIND
+        case 3, 2:
             return TWO_PAIR
-        return THREE_OF_A_KIND
-    elif unique_cards == 2:
-        # Either a full house, or four of a kind
-        cards_in_best_group = most_common[0][1]
-        if cards_in_best_group == 3:
+        case 3, 3:
+            return THREE_OF_A_KIND
+        case 2, 3:
             return FULL_HOUSE
-
-        return FOUR_OF_A_KIND
-
-    # Five of a kind
-    return FIVE_OF_A_KIND
+        case 2, 4:
+            return FOUR_OF_A_KIND
+        case _, _:
+            # Should be impossible unless given an invalid hand
+            assert False, "Unknown hand type"
 
 
 class Hand:
