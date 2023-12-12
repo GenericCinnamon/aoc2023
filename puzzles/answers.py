@@ -32,6 +32,9 @@ if __name__ == "__main__":
         # Day 05
         test(5, "test_input.txt", (35, 46)),
         test(5, "input.txt", (388071289, 84206669)),
+        # Day 06
+        test(6, "test_input.txt", (288, 71503)),
+        test(6, "input.txt", (219849, 29432455)),
         # Day 07
         test(7, "test_input.txt", (6440, 5905)),
         test(7, "input.txt", (247815719, 248747492)),
