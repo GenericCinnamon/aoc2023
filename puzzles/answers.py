@@ -38,4 +38,9 @@ if __name__ == "__main__":
         # Day 07
         test(7, "test_input.txt", (6440, 5905)),
         test(7, "input.txt", (247815719, 248747492)),
+        # Day 08
+        test(8, "test_input.txt", (2, ANY)),
+        test(8, "test_input2.txt", (6, ANY)),
+        test(8, "test_input3.txt", (ANY, 6)),
+        test(8, "input.txt", (17287, 18625484023687)),
     ))))
