@@ -20,6 +20,9 @@ class Grid:
     blockers: int
     grid_mask: int = field(init=False)
     first_row_mask: int = field(init=False)
+    last_row_mask: int = field(init=False)
+    first_col_mask: int = field(init=False)
+    last_col_mask: int = field(init=False)
 
     @staticmethod
     def from_text(content: str) -> "Grid":
@@ -46,7 +49,12 @@ class Grid:
 
     def __post_init__(self):
         self.grid_mask = pow(2, self.width * self.height) - 1
-        self.first_row_mask = (pow(2, self.width) - 1) << self.width * (self.height - 1)
+        self.last_row_mask = pow(2, self.width) - 1
+        self.first_row_mask = self.last_row_mask << self.width * (self.height - 1)
+        self.last_col_mask = 1
+        for _ in range(self.height-1):
+            self.last_col_mask = (self.last_col_mask << self.width) + 1
+        self.first_col_mask = self.last_col_mask << self.width - 1
 
     def __str__(self) -> str:
         result = ""
@@ -63,6 +71,18 @@ class Grid:
         # Reverse the string since the least significant bit is the start
         return result[::-1].strip()
 
+    def tilt(self, func):
+        previous_state = 0
+        while previous_state != self.sliders:
+            previous_state = self.sliders
+            func()
+
+    def cycle(self):
+        self.tilt(self.step_north)
+        self.tilt(self.step_west)
+        self.tilt(self.step_south)
+        self.tilt(self.step_east)
+
     def step_north(self):
         """
         Slide north, find what hit a blocker, use the result to wipe out anything
@@ -78,6 +98,51 @@ class Grid:
         # Add in things that had no collisions and add back in the first row
         self.sliders |= keep | first_row
 
+    def step_south(self):
+        """
+        Slide south, find what hit a blocker, use the result to wipe out anything
+        """
+        # Store the first row as it will slide off the edge
+        last_row = self.sliders & self.last_row_mask
+        # Slide everything south, ignoring collisions for the moment
+        naive_slide_south = self.sliders >> self.width
+        # Note which slides had no collisions
+        keep = naive_slide_south & ~self.blockers & ~self.sliders
+        # Remove anything which had no collisions from the original state
+        self.sliders &= ~(keep << self.width)
+        # Add in things that had no collisions and add back in the first row
+        self.sliders |= keep | last_row
+
+    def step_west(self):
+        """
+        Slide west, find what hit a blocker, use the result to wipe out anything
+        """
+        # Store the first row as it will slide off the edge
+        first_col = self.sliders & self.first_col_mask
+        # Slide everything north, ignoring collisions for the moment
+        naive_slide_west = (self.sliders ^ first_col) << 1
+        # Note which slides had no collisions
+        keep = naive_slide_west & ~self.blockers & ~self.sliders
+        # Remove anything which had no collisions from the original state
+        self.sliders &= ~(keep >> 1)
+        # Add in things that had no collisions and add back in the first row
+        self.sliders |= keep | first_col
+
+    def step_east(self):
+        """
+        Slide east, find what hit a blocker, use the result to wipe out anything
+        """
+        # Store the first row as it will slide off the edge
+        last_col = self.sliders & self.last_col_mask
+        # Slide everything north, ignoring collisions for the moment
+        naive_slide_east = (self.sliders ^ last_col) >> 1
+        # Note which slides had no collisions
+        keep = naive_slide_east & ~self.blockers & ~self.sliders
+        # Remove anything which had no collisions from the original state
+        self.sliders &= ~(keep << 1)
+        # Add in things that had no collisions and add back in the first row
+        self.sliders |= keep | last_col
+
     def north_load(self) -> int:
         total = 0
         grid_copy = self.sliders
@@ -91,13 +156,31 @@ def puzzle(filename):
     with open(filename) as f:
         grid = Grid.from_text(f.read())
 
-    previous_state = 0
-    while previous_state != grid.sliders:
-        previous_state = grid.sliders
-        grid.step_north()
+    # Part 1 + reset
+    initial_state = grid.sliders
+    grid.tilt(grid.step_north)
     part1 = grid.north_load()
+    grid.sliders = initial_state
 
-    return (part1, 2)
+    # Part 2
+    state_lookup = {}
+    iterations = int(1e9)
+    iteration = 0
+    while iteration < iterations:
+        if grid.sliders in state_lookup:
+            start = state_lookup[grid.sliders]
+            length = iteration - start
+            steps_to_jump = ((iterations - iteration) // length) * length
+            # print(f"Found loop on {iteration=}, {start=}, {length=}, jumping forward {steps_to_jump}")
+            iteration += steps_to_jump
+        else:
+            state_lookup[grid.sliders] = iteration
+        grid.cycle()
+        iteration += 1
+
+    part2 = grid.north_load()
+
+    return (part1, part2)
 
 
 if __name__ == "__main__":
