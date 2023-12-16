@@ -54,7 +54,7 @@ class PathTracker:
     finish_offset: int
 
 
-def puzzle(filename):
+def puzzle(filename: str) -> Tuple[int, int]:
     with open(filename, "r") as f:
         instructions, _, *rule_lines = f.read().split("\n")
     instruction_count = len(instructions)
