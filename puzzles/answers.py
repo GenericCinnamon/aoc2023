@@ -1,4 +1,5 @@
 import importlib
+import sys
 from unittest.mock import ANY
 
 
@@ -9,13 +10,16 @@ def test(day, filename, answer):
 
     full_result = puzzle(full_filename)
     for part, part_answer, result in zip([1, 2], answer, full_result):
-        verdict = "PASS" if part_answer == result else "FAIL" + f" for {filename} - {result=} != {part_answer}"
+        if part_answer == result:
+            verdict = "PASS"
+        else:
+            verdict = f"FAIL for {filename} - {result=} != {part_answer}"
         print(f"Day {padded_day} Part {part}: {verdict}")
     return full_result == answer
 
 
 if __name__ == "__main__":
-    exit(int(not all((
+    all_correct = all((
         # Day 01
         test(1, "test_input1.txt", (142, 142)),
         test(1, "test_input2.txt", (ANY, 281)),
@@ -43,4 +47,8 @@ if __name__ == "__main__":
         test(8, "test_input2.txt", (6, ANY)),
         test(8, "test_input3.txt", (ANY, 6)),
         test(8, "input.txt", (17287, 18625484023687)),
-    ))))
+        # Day 14
+        test(14, "test_input.txt", (136, 64)),
+        test(14, "input.txt", (105208, 102943)),
+    ))
+    sys.exit(0 if all_correct else 1)
