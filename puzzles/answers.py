@@ -50,6 +50,9 @@ if __name__ == "__main__":
         # Day 09
         test(9, "test_input.txt", (114, 2)),
         test(9, "input.txt", (1882395907, 1005)),
+        # Day 10
+        test(10, "test_input.txt", (8, None)),
+        test(10, "input.txt", (None, None)),
         # Day 14
         test(14, "test_input.txt", (136, 64)),
         test(14, "input.txt", (105208, 102943)),
