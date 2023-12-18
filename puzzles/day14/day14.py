@@ -151,13 +151,11 @@ def puzzle(filename):
     with open(filename, encoding="utf-8") as f:
         grid = Grid.from_text(f.read())
 
-    # Part 1 + reset
-    initial_state = grid.sliders
+    # Part 1
     grid.tilt(grid.step_north)
     part1 = grid.north_load()
-    grid.sliders = initial_state
 
-    # Part 2
+    # Part 2, no need to reset the grid because we start with north anyway
     state_lookup = {}
     iterations = int(1e9)
     iteration = 0
@@ -165,8 +163,7 @@ def puzzle(filename):
         if grid.sliders in state_lookup:
             length = iteration - state_lookup[grid.sliders]
             iteration += ((iterations - iteration) // length) * length
-        else:
-            state_lookup[grid.sliders] = iteration
+        state_lookup[grid.sliders] = iteration
         grid.cycle()
         iteration += 1
     part2 = grid.north_load()

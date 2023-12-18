@@ -90,3 +90,48 @@ def test_shift_west(grid):
     #....###..
     #OO..#....\
     """.replace(" ", "")
+
+
+def test_cycle(grid):
+    # Using the examples given in AoC
+    grid.cycle()
+    assert str(grid) == """\
+    .....#....
+    ....#...O#
+    ...OO##...
+    .OO#......
+    .....OOO#.
+    .O#...O#.#
+    ....O#....
+    ......OOOO
+    #...O###..
+    #..OO#....\
+    """.replace(" ", "")
+
+    grid.cycle()
+    assert str(grid) == """\
+    .....#....
+    ....#...O#
+    .....##...
+    ..O#......
+    .....OOO#.
+    .O#...O#.#
+    ....O#...O
+    .......OOO
+    #..OO###..
+    #.OOO#...O\
+    """.replace(" ", "")
+
+    grid.cycle()
+    assert str(grid) == """\
+    .....#....
+    ....#...O#
+    .....##...
+    ..O#......
+    .....OOO#.
+    .O#...O#.#
+    ....O#...O
+    .......OOO
+    #...O###.O
+    #.OOO#...O\
+    """.replace(" ", "")
