@@ -56,5 +56,8 @@ if __name__ == "__main__":
         # Day 14
         test(14, "test_input.txt", (136, 64)),
         test(14, "input.txt", (105208, 102943)),
+        # Day 20
+        test(20, "test_input.txt", (32000000, ANY)),
+        test(20, "input.txt", (818723272, None)),
     ))
     sys.exit(0 if all_correct else 1)
